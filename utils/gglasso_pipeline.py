@@ -27,8 +27,11 @@ class gg_lasso_network_analysis():
         with open(self.file_path, 'rb') as f:
             self.estimate = pickle.load(f)
     
-    def create_problem(self, S_col):
-        self.S = self.estimate[S_col].to_numpy()
+    def create_problem(self, S_col=None):
+        if S_col:
+            self.S = self.estimate[S_col].to_numpy()
+        else:
+            self.S = self.estimate
         self.P = glasso_problem(self.S, self.N, reg_params = {'lambda1': 0.05}, latent = False, do_scaling = False)
         print(self.P)
 
