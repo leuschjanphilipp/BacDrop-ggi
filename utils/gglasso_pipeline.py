@@ -27,17 +27,17 @@ class gg_lasso_network_analysis():
         with open(self.file_path, 'rb') as f:
             self.estimate = pickle.load(f)
     
-    def create_problem(self, S_col=None):
+    def create_problem(self, S_col=None, latent=False, do_scaling=False):
         if S_col:
             self.S = self.estimate[S_col].to_numpy()
         else:
             self.S = self.estimate
-        self.P = glasso_problem(self.S, self.N, reg_params = {'lambda1': 0.05}, latent = False, do_scaling = False)
+        self.P = glasso_problem(self.S, self.N, reg_params={'lambda1': 0.05}, latent=latent, do_scaling=do_scaling)
         print(self.P)
 
     def model_selection(self, lambda1_range=np.logspace(0, -3, 30), method='eBIC', gamma = 0.1):
 
-        self.P.model_selection(modelselect_params = {'lambda1_range': lambda1_range}, method = method, gamma = gamma)
+        self.P.model_selection(modelselect_params={'lambda1_range': lambda1_range}, method=method, gamma=gamma)
         # regularization parameters are set to the best ones found during model selection
         print(self.P.reg_params)
     
