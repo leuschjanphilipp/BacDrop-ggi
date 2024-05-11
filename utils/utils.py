@@ -1,4 +1,6 @@
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 from Bio import Entrez
 from tqdm import tqdm
@@ -25,3 +27,16 @@ def is_outlier(adata, metric: str, nmads: int):
         np.median(M) + nmads * median_abs_deviation(M) < M
     )
     return outlier
+
+def plot_lambda1_path(dict):
+    lambda1 = dict["reg_params"]["lambda1"]
+    lambda1_range = dict["modelselect_params"]["lambda1_range"]
+    eBIC = dict["modelselect_stats"]["BIC"][0.1]
+
+    sns.lineplot(x=lambda1_range, y=eBIC.squeeze())
+    plt.axvline(x=lambda1, ls="--", color="C3", label=f"lambda1={np.round(lambda1, 7)}")
+    plt.xscale("log")
+    plt.xlabel("lambda")
+    plt.ylabel("BIC")
+    plt.legend()
+    plt.show()
