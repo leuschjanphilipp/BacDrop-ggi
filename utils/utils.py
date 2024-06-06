@@ -3,7 +3,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from Bio import Entrez
-from tqdm import tqdm
 from scipy.stats import median_abs_deviation
 
 def calc_sparsity(matrix):
@@ -16,7 +15,7 @@ def fetch_protein_names(accession_numbers):
     handle = Entrez.efetch(db="protein", id=accession_numbers, rettype="fasta")
     records = handle.readlines()
     names = []
-    for record in tqdm(records):
+    for record in records:
         if record.startswith(">"):
             names.append(record.strip().lstrip(">"))
     return names
