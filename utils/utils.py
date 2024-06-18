@@ -37,5 +37,20 @@ def plot_lambda1_path(dict):
     plt.xscale("log")
     plt.xlabel("lambda")
     plt.ylabel("BIC")
+    plt.gca().invert_xaxis()
+    plt.legend()
+    plt.show()
+
+def plot_sparsity_path(dict):
+    lambda1 = dict["reg_params"]["lambda1"]
+    lambda1_range = dict["modelselect_params"]["lambda1_range"]
+    sparsity = dict["modelselect_stats"]["SP"]
+
+    sns.lineplot(x=lambda1_range, y=sparsity.squeeze())
+    plt.axvline(x=lambda1, ls="--", color="C3", label=f"selected lambda1={np.round(lambda1, 7)}")
+    plt.xscale("log")
+    plt.xlabel("lambda")
+    plt.ylabel("Sparsity")
+    plt.gca().invert_xaxis()
     plt.legend()
     plt.show()
